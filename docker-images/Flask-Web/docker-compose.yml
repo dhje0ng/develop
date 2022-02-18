@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  flaskweb:
+    build: ./images/flask-web
+    container_name: flask-web
+    volumes:
+      - ./src:/app
+    working_dir: /app
+    ports:
+      - "30901:5000"
+    networks:
+      flask_web:
+        ipv4_address: 172.6.0.2
+
+networks:
+  flask_web:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.6.0.0/24

@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  node_web:
+    build: ./images/nodejs
+    container_name: node_web
+    volumes:
+      - ./src:/usr/app
+    working_dir: /usr/app
+    ports:
+      - 30902:8000
+    networks:
+      node_web:
+        ipv4_address: 172.7.0.2
+
+networks:
+  node_web:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.7.0.0/24

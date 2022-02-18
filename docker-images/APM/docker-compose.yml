@@ -1,0 +1,33 @@
+version: '3.5'
+
+services:
+  web:
+    build: ./images/apache
+    container_name: apm_web
+    volumes:
+      - "./src:/var/www/html"
+    ports:
+      - 30900:80
+    networks:
+      apm_web:
+        ipv4_address: 172.3.0.2
+  
+  db:
+    build: ./images/mysql
+    container_name: apm_db
+    environment:
+      MYSQL_ROOT_PASSWORD: 'apmtest1234'
+      MYSQL_USER: 'apmtest'
+      MYSQL_PASSWORD: 'apmtest1234'
+    ports:
+      - 3400:3400
+    networks:
+      apm_web:
+        ipv4_address: 172.3.0.3
+
+networks:
+  apm_web:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.3.0.0/24
