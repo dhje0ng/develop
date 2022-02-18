@@ -1,0 +1,38 @@
+version: '3.5'
+
+services:
+  main:
+    build: ./images/main
+    container_name: bangsiri_main
+    environment: 
+      TZ: Asia/Seoul
+    volumes:
+      - "./src:/var/www/html"
+    ports:
+      - 31912:80
+    networks:
+      bangsiri_web:
+        ipv4_address: 172.4.0.2
+  db:
+    build: ./images/db
+    container_name: bangsiri_db
+    environment:
+      MYSQL_ROOT_PASSWORD: "b@ngsiri2021!@#"
+      MYSQL_USER: "bangsiriadm"
+      MYSQL_PASSWORD: "b@ngsiri2021!@#"
+      MYSQL_DATABASE: "bangsiriexam"
+      TZ: Asia/Seoul
+    volumes:
+      - "./env/:/docker-entrypoint-initdb.d/"
+    ports:
+      - 3612:3612
+    networks:
+      bangsiri_web:
+        ipv4_address: 172.4.0.3
+    
+networks:
+  bangsiri_web:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.4.0.0/24
